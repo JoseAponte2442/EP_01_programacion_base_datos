@@ -1,13 +1,16 @@
+--Creamos la base de datos
 CREATE DATABASE AdministracionEP01;
 GO
-
+--La usamos
 USE AdministracionEP01;
 GO
 
 -- Se procede a crear cada tabla a partir de los datos brindados en el caso:
 --1. Tabla Clientes
 -- De los clientes tenemos el ClienteId, el número de DNI, Nombre, Telefono
---not null para dni porque necesitamos que siempre esté completo
+--El ClienteID lo elegimos como primary key y el identity para generar de forma automática e incremental un número único para cada nuevo registro que se inserta en la tabla.
+--not null para dni porque necesitamos que siempre esté completo al igual que el Nombre y el telefono.
+--Dni varchar 8 porque son 8 los caracteres máximos y en el telefono son 9. Ambos son únicos.
 CREATE TABLE Clientes (
     ClienteID int identity primary key,
     DNI varchar(8) NOT NULL unique,
@@ -16,17 +19,24 @@ CREATE TABLE Clientes (
 );
 go
 -- 2. Tabla Productos
--- De la tabla productos necesitamos producto
+-- De la tabla productos necesitamos productoID, Nombre del producto, Precio, stock.
+--En este caso se emplea el Producto ID como primary key y el identity para generar de forma automática e incremental un número único para cada nuevo registro que se inserta en la tabla.
+--not null para precio y nombre de producto.
+-- en el caso del precio y el stock emplamos el check para impedir registrar o actualizar un producto con precio 0 o en el caso dwl o negativo.
+
+    
 CREATE TABLE Productos (
     ProductoID int identity primary key,
     NombreProducto varchar(50) NOT NULL,
-    Precio decimal(10,2) NOT NULL CHECK (Precio > 0),
+    Precio (10,2) NOT NULL CHECK (Precio > 0),
     Stock int NOT NULL DEFAULT 0 CHECK (Stock >= 0)
 );
 
 -- 3. Tabla Ventas 
--- Cantidad de datos 
-
+-- -- De la tabla Ventas necesitamos VentaID y ClienteID.
+-- En este caso se emplea VentaID como primary key y el identity para generar de forma automática e incremental un número único para cada nueva venta que se registra en el sistema.
+-- not null en ClienteID, ya que toda venta debe estar asociada obligatoriamente a un cliente.
+-- se emplea una Foreign Key para garantizar la integridad referencial, asegurando que solo se puedan registrar ventas asociadas a clientes que realmente existan en la tabla Clientes.
 CREATE TABLE Ventas (
     VentaID int identity primary key,
     ClienteID int NOT NULL,
@@ -34,6 +44,11 @@ CREATE TABLE Ventas (
 );
 
 -- 4. Tabla DetalleVentas
+-- De la tabla DetalleVentas necesitamos VentaID, ProductoID, Cantidad y PrecioUnitario
+-- En este caso se emplea una Primary Key compuesta por dos columnas (VentaID, ProductoID) para garantizar que un mismo producto no se repita en los detalles de una misma venta, identificando de forma única cada línea del detalle.
+-- not null en VentaID, ProductoID, Cantidad y PrecioUnitario para asegurar que ningún registro de detalle carezca de información esencial.
+-- se emplea el CHECK (Cantidad > 0) para impedir registrar cantidades de productos en cero o negativas.
+-- se emplean dos Foreign Keys (CONSTRAINT FK_Detalle_Ventas y CONSTRAINT FK_Detalle_Productos) para asegurar la integridad referencial, vinculando los registros estrictamente a ventas y productos existentes en sus respectivas tablas.
 CREATE TABLE DetalleVentas (
     VentaID INT NOT NULL,
     ProductoID INT NOT NULL,
