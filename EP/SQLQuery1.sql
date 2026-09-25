@@ -28,7 +28,7 @@ go
 CREATE TABLE Productos (
     ProductoID int identity primary key,
     NombreProducto varchar(50) NOT NULL,
-    Precio (10,2) NOT NULL CHECK (Precio > 0),
+    Precio DECIMAL(10,2) NOT NULL CHECK (Precio > 0),
     Stock int NOT NULL DEFAULT 0 CHECK (Stock >= 0)
 );
 
