@@ -12,7 +12,7 @@ Repositorio que contiene un script completo en SQL Server. Creación, población
 | 4  | Jhonn Paul Ccasani Enciso            | 44061898@mail.isil.pe |  100%  |
 
 
-## 📹Link youtube :
+## 📹Link youtube : https://youtu.be/vbGrqAaRon8
 
 📋 Estructura del Proyecto
 El script se divide en 4 actividades principales:
