@@ -106,3 +106,28 @@ INSERT INTO DetalleVentas (VentaID, ProductoID, Cantidad, PrecioUnitario) VALUES
 (5, 3, 1, 25.50),   -- Venta 5: 1 Mouse
 (6, 1, 2, 180.00);  -- Venta 6: 2 Monitores
 GO
+
+--Para validar que el motor de base de datos aplica correctamente las reglas definidas en el DDL, se diseñaron y ejecutaron las siguientes pruebas de fallo controlado:
+-- Prueba A: Intento de registro con Precio no válido (Violación de CHECK)
+-- Intento de inserción de producto con stock negativo
+INSERT INTO Productos (NombreProducto, Precio, Stock) 
+VALUES ('Teclado USB Genérico', 15.00,-10);
+go
+-- Prueba B: Intento de registro con Precio no válido (Violación de CHECK)
+-- Intento de inserción de producto con precio en cero
+INSERT INTO Productos (NombreProducto, Precio, Stock) 
+VALUES ('Teclado USB Genérico', 0, 10);
+go
+-- Prueba C: Intento de registro duplicado (Violación de UNIQUE)
+-- Intento de insertar dni igual
+INSERT INTO Clientes (DNI, NombreCompleto, Telefono) VALUES 
+('72839102', 'Juan Perez', '987652221');
+go
+
+-- Prueba D: Intento de insertar NombreCompleto NULO (Violación de NOT NULL)
+INSERT INTO Clientes (DNI, NombreCompleto, Telefono) 
+VALUES ('72839732', NULL, '987652221');
+GO
+
+
+
