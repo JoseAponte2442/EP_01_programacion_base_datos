@@ -31,6 +31,7 @@ Clona o descarga el archivo con el código fuente del script.
 Ejecuta el bloque de código de manera secuencial (o por secciones utilizando las instrucciones GO).
 
 🔍 Resumen de Consultas Incluidas
+
 🔹 Actividad 2: Filtros y Agrupación
 Filtros de texto y máscara: Selección de clientes que inician con 'C' o 'M', convirtiendo nombres a mayúsculas, calculando la longitud del texto y enmascarando teléfonos (mostrando solo los últimos 3 dígitos).
 
@@ -38,12 +39,14 @@ Rangos y cálculos: Productos con precios entre $50.00 y $300.00 o stocks espec�
 
 Agrupación con HAVING: Resumen de ventas por VentaID (unidades vendidas, importe total, precio promedio, mínimos y máximos) filtrando únicamente aquellas que superen los $200.00.
 
+
 🔹 Actividad 3: Consultas Multitabla y Reportes
 Clasificación con INNER JOIN y CASE: Cruce de 4 tablas para etiquetar el nivel de compra de cada cliente (Compra Fuerte, Compra Promedio, Compra Básica).
 
 Auditoría con LEFT JOIN: Identificación de clientes inactivos que aún no han concretado ninguna compra.
 
 Persistencia de datos (SELECT INTO): Generación automática de una tabla analítica permanente llamada ClientesVip que almacena únicamente a los clientes con un gasto acumulado superior a $500.00.
+
 
 🔹 Actividad 4: Optimización con Subconsultas
 Se implementan dos enfoques lógicos para identificar clientes que han comprado productos con Stock Crítico (< 15 unidades):
