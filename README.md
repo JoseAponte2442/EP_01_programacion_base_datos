@@ -13,6 +13,10 @@ Actividad 3 (Consultas Multitabla): Uso de INNER JOIN, LEFT JOIN con condicional
 Actividad 4 (Subconsultas): Comparativa de rendimiento y alternativas lógicas utilizando operadores de conjuntos (IN) frente a subconsultas correlacionadas (EXISTS).
 
 🗄️ Modelo de Datos y Restricciones
+Actividad 1: 
+
+
+
 La base de datos AdministracionEP01 consta de 4 tablas relacionadas:
 
 Clientes: Almacena la información de los compradores. Contiene restricciones de unicidad (UNIQUE) en DNI y Telefono, además de validación de campos obligatorios (NOT NULL).
@@ -23,12 +27,6 @@ Ventas: Cabecera de las transacciones comerciales asociadas obligatoriamente a u
 
 DetalleVentas: Detalle línea por línea de cada venta. Utiliza una Primary Key compuesta (VentaID, ProductoID) y validaciones para asegurar que no existan cantidades negativas.
 
-🚀 Guía de Ejecución
-Abre tu gestor de base de datos compatible con T-SQL (como SQL Server Management Studio - SSMS o Azure Data Studio).
-
-Clona o descarga el archivo con el código fuente del script.
-
-Ejecuta el bloque de código de manera secuencial (o por secciones utilizando las instrucciones GO).
 
 🔍 Resumen de Consultas Incluidas
 
