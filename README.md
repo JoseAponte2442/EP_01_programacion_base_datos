@@ -1,6 +1,15 @@
 ﻿# EP_01_programacion_base_datos
 Repositorio que contiene un script completo en SQL Server (T-SQL) para la creación, población, validación y consulta de una base de datos orientada a la administración de un sistema de clientes, productos y ventas.
 
+## Integrantes del equipo
+
+| N° | Nombre completo                      | Correo institucional  |
+|----|--------------------------------------|-----------------------|
+| 1  | Imanol Ponce de León                 | 76221830@mail.isil.pe |
+| 2  | Jose Manuel Aponte Tanta             | 75619512@mail.isil.pe |
+| 3  | Andrés Francisco Pimentel Saldaña    | 73213777@mail.isil.pe |
+| 4  | Jhonn Paul Ccasani Enciso            | 44061898@mail.isil.pe |
+
 📋 Estructura del Proyecto
 El script se divide en 4 actividades principales:
 
