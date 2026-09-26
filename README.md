@@ -1,4 +1,5 @@
 ﻿# EP_01_programacion_base_datos
+
 Repositorio que contiene un script completo en SQL Server (T-SQL) para la creación, población, validación y consulta de una base de datos orientada a la administración de un sistema de clientes, productos y ventas.
 
 ## Integrantes del equipo
@@ -22,7 +23,56 @@ Actividad 3 (Consultas Multitabla): Uso de INNER JOIN, LEFT JOIN con condicional
 Actividad 4 (Subconsultas): Comparativa de rendimiento y alternativas lógicas utilizando operadores de conjuntos (IN) frente a subconsultas correlacionadas (EXISTS).
 
 🗄️ Modelo de Datos y Restricciones
-Actividad 1:  creacioón de la base de datos.
+Actividad 1:  
+
+## 📋 Estructura de Tablas
+
+<img width="593" height="718" alt="image" src="https://github.com/user-attachments/assets/77c26439-e098-42bc-a84d-91abb918fb15" />
+
+### 1. Tabla `CLIENTES` 🟣
+* **Propósito:** Almacena la información de los compradores o clientes registrados en el sistema.
+* **Campos:**
+  * `ClienteID` (`int`, **PK**): Identificador único de cada cliente (Clave Primaria).
+  * `DNI` (`varchar`): Documento de identidad del cliente.
+  * `NombreCompleto` (`varchar`): Nombre y apellidos del cliente.
+  * `Telefono` (`varchar`): Número de contacto del cliente.
+* **Relación:** Un cliente puede realizar **muchas** ventas (relación de 1 a muchos: de `CLIENTES` a `VENTAS`).
+
+---
+
+### 2. Tabla `VENTAS` 🟢
+* **Propósito:** Registra las cabeceras o transacciones de venta realizadas por los clientes.
+* **Campos:**
+  * `VentaID` (`int`, **PK**): Identificador único de cada venta.
+  * `ClienteID` (`int`, **FK**): Clave foránea que referencia al cliente que realizó la compra.
+* **Relación:** 
+  * Pertenece a un solo cliente.
+  * Contiene **muchos** detalles de venta (relación de 1 a muchos hacia `DETALLE_VENTAS`).
+
+---
+
+### 3. Tabla `PRODUCTOS` 🔵
+* **Propósito:** Almacena el catálogo de productos disponibles para la venta.
+* **Campos:**
+  * `ProductoID` (`int`, **PK**): Identificador único del producto.
+  * `NombreProducto` (`varchar`): Nombre o descripción comercial del producto.
+  * `Precio` (`decimal`): Precio unitario actual del producto.
+  * `Stock` (`int`): Cantidad disponible en inventario.
+* **Relación:** Un producto puede incluirse en **muchos** detalles de venta a lo largo del tiempo (relación de 1 a muchos hacia `DETALLE_VENTAS`).
+
+---
+
+### 4. Tabla `DETALLE_VENTAS` 🟠
+* **Propósito:** Tabla intermedia o de asociación que resuelve la relación de **Muchos a Muchos** entre `VENTAS` y `PRODUCTOS`. Especifica exactamente qué productos y qué cantidades componen cada venta.
+* **Campos:**
+  * `VentaID` (`int`, **PK, FK**): Parte de la clave primaria compuesta y referencia a la tabla Ventas.
+  * `ProductoID` (`int`, **PK, FK**): Parte de la clave primaria compuesta y referencia a la tabla Productos.
+  * `Cantidad` (`int`): Unidades compradas de ese producto específico en esa venta.
+  * `PrecioUnitario` (`decimal`): Precio que tenía el producto al momento de la transacción.
+* **Relación:** Vincula una venta específica con uno o varios productos mediante una clave primaria compuesta (`VentaID` + `ProductoID`), evitando duplicidades de un mismo producto en una misma venta.
+
+
+creación de la base de datos.
 
 <img width="1193" height="466" alt="image" src="https://github.com/user-attachments/assets/63fc7a13-e731-4272-8d49-fb5fecb598d8" />
 
@@ -42,6 +92,8 @@ La base de datos AdministracionEP01 consta de 4 tablas relacionadas:
 4. DetalleVentas: Detalle línea por línea de cada venta. Utiliza una Primary Key compuesta (VentaID, ProductoID) y validaciones para asegurar que no existan cantidades negativas.
   
    <img width="1253" height="570" alt="image" src="https://github.com/user-attachments/assets/2a4afb7e-d654-4ccf-bbfb-856d73d21f26" />
+
+Esta es la relación de las tablas:
 
 📄Rellenamos las tablas con datos:
 Tabla Clientes y Productos:
