@@ -1,3 +1,4 @@
+-- ACTIVIDAD 1
 --Creamos la base de datos
 CREATE DATABASE AdministracionEP01;
 GO
@@ -128,6 +129,139 @@ go
 INSERT INTO Clientes (DNI, NombreCompleto, Telefono) 
 VALUES ('72839732', NULL, '987652221');
 GO
+-- ACTIVIDAD 2: CONSULTAS DE SELECCIÓN, FILTROS Y AGRUPACIÓN
+-- CONSULTA 1: Filtros de texto y formato de datos
+-- Requerimiento: Filtrar clientes cuyo nombre comience con las letras 'C' o 'M',
+-- presentando su nombre en mayúsculas, la cantidad de caracteres de su nombre
+-- y una máscara de seguridad para el teléfono dejando visibles solo los últimos 3 dígitos.
+
+SELECT 
+    ClienteID,
+    DNI,
+    UPPER(NombreCompleto) AS NombreMayusculas,
+    LEN(NombreCompleto) AS CantidadCaracteres,
+    CONCAT('**', RIGHT(Telefono, 3)) AS TelefonoProtegido
+FROM Clientes
+WHERE NombreCompleto LIKE 'C%' OR NombreCompleto LIKE 'M%'
+ORDER BY NombreCompleto ASC;
+GO
+-- CONSULTA 2: Filtros de rango, listas y cálculo numérico
+-- Requerimiento: Consultar productos que tengan un precio entre $50.00 y $300.00,
+-- o bien que posean un stock específico de 5, 12 o 25 unidades. 
+-- Incluye el cálculo del valor total en inventario (Precio * Stock) redondeado a 2 decimales.
+SELECT 
+    ProductoID,
+    NombreProducto,
+    Precio,
+    Stock,
+    ROUND(Precio * Stock, 2) AS ValorTotalInventario
+FROM Productos
+WHERE (Precio BETWEEN 50.00 AND 300.00)
+   OR (Stock IN (5, 12, 25))
+ORDER BY ValorTotalInventario DESC;
+GO
+-- CONSULTA 3: Agrupación, funciones de agregación y filtro HAVING
+-- Requerimiento: Agrupar los detalles de cada venta (DetalleVentas) por VentaID,
+-- calculando el total de productos vendidos, el importe total de la venta,
+-- el precio promedio por ítem, y mostrando únicamente las ventas cuyo total supere los $200.00.
+SELECT 
+    VentaID,
+    SUM(Cantidad) AS TotalUnidadesVendidas,
+    SUM(Cantidad * PrecioUnitario) AS ImporteTotalVenta,
+    ROUND(AVG(PrecioUnitario), 2) AS PrecioPromedioItem,
+    MIN(PrecioUnitario) AS ItemMasBarato,
+    MAX(PrecioUnitario) AS ItemMasCaro
+FROM DetalleVentas
+GROUP BY VentaID
+HAVING SUM(Cantidad * PrecioUnitario) > 200.00
+ORDER BY ImporteTotalVenta DESC;
+GO
+-- ACTIVIDAD 3: CONSULTAS MULTITABLA
+-- CONSULTA 1: INNER JOIN con CASE para clasificar el nivel de las ventas
+-- Se unen 4 tablas para ver qué compró cada cliente y clasificar el gasto.
+
+SELECT Cli.NombreCompleto, Prod.NombreProducto, Det.Cantidad, (Det.Cantidad * Det.PrecioUnitario) as MontoSubtotal,
+    CASE 
+        WHEN (Det.Cantidad * Det.PrecioUnitario) >= 1000.00 THEN 'Compra Fuerte'
+        WHEN (Det.Cantidad * Det.PrecioUnitario) BETWEEN 200.00 AND 999.99 THEN 'Compra Promedio'
+        ELSE 'Compra Básica'
+    END as NivelDeVenta
+FROM Ventas Ven
+INNER JOIN Clientes Cli ON Ven.ClienteID = Cli.ClienteID
+INNER JOIN DetalleVentas Det ON Ven.VentaID = Det.VentaID
+INNER JOIN Productos Prod ON Det.ProductoID = Prod.ProductoID
+ORDER BY MontoSubtotal DESC;
+GO
 
 
+-- CONSULTA 2: LEFT JOIN para buscar clientes que aún no compran
+-- Utilizamos OUTER JOIN para no perder de la lista a los clientes inactivos.
 
+SELECT Cli.ClienteID, Cli.NombreCompleto, Ven.VentaID,
+    CASE 
+        WHEN Ven.VentaID IS NULL THEN 'Falta concretar venta'
+        ELSE 'Cliente con registro de venta'
+    END as CondicionCliente
+FROM Clientes Cli
+LEFT OUTER JOIN Ventas Ven ON Cli.ClienteID = Ven.ClienteID
+ORDER BY Ven.VentaID ASC;
+GO
+
+
+-- CONSULTA 3: SELECT INTO para generar una tabla de mejores clientes
+-- Se filtran los que gastaron más de 500 y se guardan en una tabla nueva.
+
+SELECT Cli.DNI, Cli.NombreCompleto, Cli.Telefono, SUM(Det.Cantidad * Det.PrecioUnitario) as GastoAcumulado
+INTO ClientesVip
+FROM Clientes Cli
+INNER JOIN Ventas Ven ON Cli.ClienteID = Ven.ClienteID
+INNER JOIN DetalleVentas Det ON Ven.VentaID = Det.VentaID
+GROUP BY Cli.DNI, Cli.NombreCompleto, Cli.Telefono
+HAVING SUM(Det.Cantidad * Det.PrecioUnitario) > 500.00;
+GO
+
+-- Verificamos que la tabla se haya creado correctamente con sus datos
+SELECT * FROM ClientesVip;
+GO
+
+-- ACTIVIDAD 4: Subconsultas y Contraste de Alternativas
+-- Caso de Uso: Clientes con compras de productos en Stock Crítico (< 15)
+-- OPCIÓN A: Utilizando Subconsulta con IN
+-- Propósito: Obtener el listado de clientes cuyo ClienteID pertenezca al conjunto de IDs obtenido mediante una subconsulta que filtra productos con poco stock.
+SELECT 
+    c.ClienteID,
+    c.DNI,
+    c.NombreCompleto,
+    c.Telefono
+FROM 
+    Clientes c
+WHERE 
+    c.ClienteID IN (
+        SELECT v.ClienteID
+        FROM Ventas v
+        INNER JOIN DetalleVentas dv ON v.VentaID = dv.VentaID
+        INNER JOIN Productos p ON dv.ProductoID = p.ProductoID
+        WHERE p.Stock < 15
+    );
+GO
+-- OPCIÓN B: Utilizando Subconsulta Correlacionada con EXISTS
+-- Propósito: Obtener el mismo listado evaluando la existencia de al menos
+-- una venta ligada al cliente que contenga un producto con stock crítico.
+
+SELECT 
+    c.ClienteID,
+    c.DNI,
+    c.NombreCompleto,
+    c.Telefono
+FROM 
+    Clientes c
+WHERE 
+    EXISTS (
+        SELECT 1
+        FROM Ventas v
+        INNER JOIN DetalleVentas dv ON v.VentaID = dv.VentaID
+        INNER JOIN Productos p ON dv.ProductoID = p.ProductoID
+        WHERE v.ClienteID = c.ClienteID
+          AND p.Stock < 15
+    );
+GO
