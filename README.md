@@ -1,6 +1,6 @@
 ﻿# EP_01_programacion_base_datos
 
-Repositorio que contiene un script completo en SQL Server (T-SQL) para la creación, población, validación y consulta de una base de datos orientada a la administración de un sistema de clientes, productos y ventas.
+Repositorio que contiene un script completo en SQL Server. Creación, población, validación y consulta de una base de datos orientada a la administración de un sistema de clientes, productos y ventas basado en nuestro EP01.
 
 ## Integrantes del equipo
 
@@ -10,6 +10,9 @@ Repositorio que contiene un script completo en SQL Server (T-SQL) para la creaci
 | 2  | Jose Manuel Aponte Tanta             | 75619512@mail.isil.pe |  100%  |
 | 3  | Andrés Francisco Pimentel Saldaña    | 73213777@mail.isil.pe |  100%  |
 | 4  | Jhonn Paul Ccasani Enciso            | 44061898@mail.isil.pe |  100%  |
+
+
+## 📹Link youtube :
 
 📋 Estructura del Proyecto
 El script se divide en 4 actividades principales:
