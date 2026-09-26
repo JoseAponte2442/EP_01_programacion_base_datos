@@ -4,12 +4,12 @@ Repositorio que contiene un script completo en SQL Server (T-SQL) para la creaci
 
 ## Integrantes del equipo
 
-| N° | Nombre completo                      | Correo institucional  |
-|----|--------------------------------------|-----------------------|
-| 1  | Imanol Ponce de León                 | 76221830@mail.isil.pe |
-| 2  | Jose Manuel Aponte Tanta             | 75619512@mail.isil.pe |
-| 3  | Andrés Francisco Pimentel Saldaña    | 73213777@mail.isil.pe |
-| 4  | Jhonn Paul Ccasani Enciso            | 44061898@mail.isil.pe |
+| N° | Nombre completo                      | Correo institucional  | Aporte |
+|----|--------------------------------------|-----------------------|--------|
+| 1  | Imanol Ponce de León                 | 76221830@mail.isil.pe |  100%  |
+| 2  | Jose Manuel Aponte Tanta             | 75619512@mail.isil.pe |  100%  |
+| 3  | Andrés Francisco Pimentel Saldaña    | 73213777@mail.isil.pe |  100%  |
+| 4  | Jhonn Paul Ccasani Enciso            | 44061898@mail.isil.pe |  100%  |
 
 📋 Estructura del Proyecto
 El script se divide en 4 actividades principales:
